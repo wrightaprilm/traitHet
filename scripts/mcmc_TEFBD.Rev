@@ -41,18 +41,15 @@ n_branches = 2 * n_taxa - 2
 
 source("scripts/model_FBDP_TEFBD.Rev") # FBD tree prior
 source("scripts/model_UExp_TEFBD.Rev") # UExp relaxed clock
-
-source("scripts/model_GTRG_TEFBD.Rev") # Molecular substitution model (GTR+G)
-
 source("scripts/model_Morph_TEFBD.Rev") # Morphological character change model
-
+source("scripts/model_GTRG_TEFBD.Rev") # Molecular substitution model (GTR+G)
 
 ########
 # MCMC #
 ########
 
 # initialize the model object #
-mymodel = model(origin_time)
+mymodel = model(fbd_tree)
 
 
 # Create a vector of monitors #
@@ -60,11 +57,11 @@ mymodel = model(origin_time)
 monitors.append(mnModel(filename="output/psi_vary.log", printgen=10))
 monitors.append(mnFile(filename="output/psi_vary.trees", printgen=10, fbd_tree))
 monitors.append(mnStochasticVariable(filename="output/psi_vary.stoch.log", printgen=10))
-monitors.append(mnScreen(printgen=10, num_samp_anc, origin_time))
+monitors.append(mnScreen(printgen=10 )) #, num_samp_anc, origin_time))
 # Initialize the MCMC object #
 mymcmc = mcmc(mymodel, monitors, moves)
-trace = readStochasticVariableTrace(file="output/psi_vary.stoch.log")
-mymcmc.initializeFromTrace(trace)
+#trace = readStochasticVariableTrace(file="output/psi_vary.stoch.log")
+#mymcmc.initializeFromTrace(trace)
 # Run the MCMC #
 mymcmc.run(generations=500000)
 
